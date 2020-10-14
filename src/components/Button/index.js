@@ -1,18 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './styles.css'
+import React from "react";
+import PropTypes from "prop-types";
+import "./styles.css";
+
+import { ButtonTest } from "./styles";
 
 const Button = ({ children, buttonType, onClick }) => (
-  <button onClick={onClick} className={buttonType}>{children}</button>
+  <ButtonTest onClick={onClick} className={buttonType}>
+    {children}
+  </ButtonTest>
 );
 
 Button.defaultProps = {
-  buttonType: 'primary'
+  buttonType: "primary",
 };
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  buttonType: PropTypes.oneOf(['primary', 'secondary'])
+  buttonType: PropTypes.oneOf(["primary", "secondary"]),
 };
 
 export default Button;
