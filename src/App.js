@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { CompetView } from "./components/CompetView";
-import { ManagerSteps } from "./components/ManagerSteps";
+import { AnimationContainer } from "./components/AnimationContainer";
 
 import { Slide, Header } from "./styles/style";
 
@@ -12,6 +12,7 @@ function App() {
   const [wrr1, setWrr1] = useState({ type: null, initial: true });
   const [wrr2, setWrr2] = useState({ type: null, initial: false });
   const [currentSlide, setCurrentSlide] = useState("wrpp1");
+  const [counter, setCounter] = useState(0)
 
   const [currentManager, setCurrentManager] = useState(null)
 
@@ -51,35 +52,40 @@ function App() {
 
   const nextMngrSlide = () => {
     setCurrentManager('next')
+    // setCurrentManager(null)
   }
 
-  const isFinishedAnimationMngr = () => {
-    setCurrentManager(null)
-    // moveSlide("prev")
+  const isFinishedAnimationMngr = (sideSlide) => {
+    if (!!currentManager) {
+      setCurrentManager(null)
+      console.log('cambio')
+      console.log(sideSlide)
+    }
   }
 
   return (
     <div className="App">
       <Header>
         <button onClick={() => moveSlide("prev")}>CompetView</button>
-        <button onClick={() => moveSlide("next")}>ManagerSteps</button>
+        <button onClick={() => moveSlide("next")}>AnimationContainer</button>
       </Header>
 
       <Slide id="wrpp1" typeAnimation={wrr1}>
         <CompetView />
       </Slide>
       <Slide id="wrpp2" typeAnimation={wrr2}>
-        <ManagerSteps 
-          mngrCallback={isFinishedAnimationMngr}
-          moveMngr={currentManager}
+        <AnimationContainer 
+          callbackAnimation={isFinishedAnimationMngr}
+          moveAnimation={currentManager}
+          widthSlide={360}
         > 
           <div>
             <h3>
-              Aja esto es una prueba
+              Aja esto es una prueba 2
             </h3>
             <button onClick={nextMngrSlide}>Click</button>
           </div>
-        </ManagerSteps>
+        </AnimationContainer>
       </Slide>
     </div>
   );

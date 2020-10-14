@@ -5,15 +5,15 @@ export const Slide = styled.div`
   ${(props) =>
     !!props.typeAnimation &&
     css`
-      ${slideAnimate({ typeAnimation: props.typeAnimation })}
+      ${slideAnimate({ typeAnimation: props.typeAnimation, widthSlide: props.widthSlide, sideAnimaiton: props.sideAnimaiton })}
     `}
   animation-fill-mode: forwards;
   left: 50%;
-  margin-left: -180px;
+  margin-left: -${props => props.widthSlide/2}px;
   padding: 20px;
   position: absolute;
   transition: 0.2s;
-  width: 360px;
+  width: ${props => props.widthSlide}px;
   will-change: left, opacity;
 `;
 
