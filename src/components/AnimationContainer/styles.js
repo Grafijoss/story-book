@@ -8,6 +8,7 @@ export const Slide = styled.div`
       ${slideAnimate({ typeAnimation: props.typeAnimation, widthSlide: props.widthSlide, sideAnimaiton: props.sideAnimaiton })}
     `}
   animation-fill-mode: forwards;
+  height: ${props => props.heightSlide ? props.heightSlide + 'px' : '100%' };
   left: 50%;
   margin-left: -${props => props.widthSlide/2}px;
   position: absolute;
@@ -21,4 +22,5 @@ export const WrrpSlider = styled.div`
   position: relative;
   width: 100%;
 `;
+
 

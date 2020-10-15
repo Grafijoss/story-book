@@ -77,8 +77,14 @@ button:focus, button:active {
 }
 
 .card-container{
-	height: 100%;
-	width: 100%;
+	background: #fff;
+  	border-radius: 10px 10px 0 0;
+	bottom: 0;
+	height: 500px;
+	left: 50%;
+	position: fixed;
+	transform: translateX(-50%);
+	width: 400px;
 }
 
 

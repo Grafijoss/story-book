@@ -18,8 +18,8 @@ export const WrppButtons = styled.div`
 `;
 
 export const WrrpContent = styled.div`
-  background: yellow;
   height: calc(100% - 48px);
+  padding-top: 20px;
   position: relative;
   width: 100%;
 `

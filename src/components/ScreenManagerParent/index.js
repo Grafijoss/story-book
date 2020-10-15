@@ -4,57 +4,60 @@ import {AnimationContainer} from '../AnimationContainer'
 
 import { WrppButtons, WrrpContent } from "./styles"
 
-export const ScreenManagerParent = () => {
+const MAX_COUNT = 5
+
+export const ScreenManagerParent = ({ onExit }) => {
 
     const [currentManager, setCurrentManager] = useState(null)
     const [counter, setCounter] = useState(0)
 
-    const nextMngrSlide = () => {
-        setCurrentManager('next')
+    const moveSlide = (value) => {
+        if (value === 'next') {
+            if (counter < MAX_COUNT) {
+                setCurrentManager(value)     
+            }  else {
+                setCounter(0)
+                onExit('CompetView')
+            }
+        } else {
+            if (counter > 0) {
+                setCurrentManager(value)      
+            }  else {
+                setCounter(0)
+                onExit('CompetView')
+            }
+        } 
     }
 
     const isFinishedAnimationMngr = () => {
         if (!!currentManager) {
-            const counterAdd = currentManager === 'next' ? counter + 1 : counter - 1
             setCurrentManager(null)
+            const counterAdd = currentManager === 'next' ? counter + 1 : counter - 1
             setCounter(counterAdd)
         }
     }
 
     return (
-        <div className="card-container">
+        <>
           <WrppButtons>
-            <button onClick={() => setCurrentManager("prev")}>Prev</button>
+            <button onClick={() => moveSlide("prev")}>Prev</button>
           </WrppButtons>
           <WrrpContent>
             <AnimationContainer 
                 callbackAnimation={isFinishedAnimationMngr}
                 moveAnimation={currentManager}
+                heightSlide={500}
                 widthSlide={360}
             > 
                 <div>
                     <h3>
-                        Aja esto es una prueba {counter}
+                        Manager {counter}
                     </h3>
-                    <button onClick={nextMngrSlide}>Click</button>
+                    <button onClick={() => moveSlide("next")}>Click</button>
                 </div>
             </AnimationContainer>
           </WrrpContent>
 
-        </div>
+        </>
       );
 }
-
-
-
-{/* <CompetitiveView>
-    <AnimationContainer>
-        <Content title isCollapsed>
-            <Timeline />
-        </Content>
-    -------------------------------
-        <ScreenManagerParent onExit="() => animate()"> ==> meaning each component: ReportResult, 
-            {CHILDREN} ==> implements ScreenManagerAPI
-        </ScreenManagerParent>
-    </AnimationContainer>
-</CompetitiveView> */}

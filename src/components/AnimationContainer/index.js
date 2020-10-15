@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { WrrpSlider, Slide } from "./styles";
 
-export const AnimationContainer = ({ children, callbackAnimation, moveAnimation, widthSlide }) => {
+export const AnimationContainer = ({ children, callbackAnimation, moveAnimation, widthSlide, heightSlide}) => {
   const [isAnimation, setIsAnimation] = useState(false);
-  // const [stepSlide, setStepSlide] = useState(null);
+  const [stepSlide, setStepSlide] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(null);
   const [finishSlide, setfinishSlide] = useState("enter");
   const $step = document.querySelector(Slide);
@@ -21,7 +21,7 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
     $step.removeEventListener("animationend", animation);
     if (finishSlide === "exit") {
       setfinishSlide("enter");
-      // setStepSlide("enter");
+      setStepSlide("enter");
     } else {
       setIsAnimation(false); // complete animation ends
       callbackAnimation()
@@ -33,7 +33,7 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
       setIsAnimation(true);
       setCurrentSlide(value);
       setfinishSlide("exit");
-      // setStepSlide("exit");
+      setStepSlide("exit");
     }
   };
 
@@ -41,9 +41,10 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
     <>
       <WrrpSlider>
         <Slide 
-          typeAnimation={finishSlide} 
-          widthSlide={widthSlide} 
+          heightSlide={heightSlide}
           sideAnimaiton={currentSlide}
+          typeAnimation={stepSlide} 
+          widthSlide={widthSlide} 
         >
           { children }
         </Slide>
