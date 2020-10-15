@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { CompetView } from "./components/CompetView";
-import { AnimationContainer } from "./components/AnimationContainer";
+// import { AnimationContainer } from "./components/AnimationContainer";
+import { ScreenManagerParent } from './components/ScreenManagerParent'
 
-import { Slide, Header } from "./styles/style";
+import { Slide, Header } from "./styles/styles";
 
 import "./App.css";
 
@@ -12,9 +13,6 @@ function App() {
   const [wrr1, setWrr1] = useState({ type: null, initial: true });
   const [wrr2, setWrr2] = useState({ type: null, initial: false });
   const [currentSlide, setCurrentSlide] = useState("wrpp1");
-  const [counter, setCounter] = useState(0)
-
-  const [currentManager, setCurrentManager] = useState(null)
 
   useEffect(function () {
     const $wrpp1 = document.getElementById("wrpp1");
@@ -50,18 +48,7 @@ function App() {
     }
   };
 
-  const nextMngrSlide = () => {
-    setCurrentManager('next')
-    // setCurrentManager(null)
-  }
-
-  const isFinishedAnimationMngr = (sideSlide) => {
-    if (!!currentManager) {
-      setCurrentManager(null)
-      console.log('cambio')
-      console.log(sideSlide)
-    }
-  }
+  
 
   return (
     <div className="App">
@@ -74,7 +61,8 @@ function App() {
         <CompetView />
       </Slide>
       <Slide id="wrpp2" typeAnimation={wrr2}>
-        <AnimationContainer 
+        <ScreenManagerParent />
+        {/* <AnimationContainer 
           callbackAnimation={isFinishedAnimationMngr}
           moveAnimation={currentManager}
           widthSlide={360}
@@ -85,7 +73,7 @@ function App() {
             </h3>
             <button onClick={nextMngrSlide}>Click</button>
           </div>
-        </AnimationContainer>
+        </AnimationContainer> */}
       </Slide>
     </div>
   );

@@ -66,6 +66,11 @@ h2 {
 	box-sizing: border-box;
 }
 
+button:focus, button:active {
+	outline: none;
+	box-shadow: none;
+  }
+
 .app, #root {
 	height: 100vh;
 	width: 100vw;

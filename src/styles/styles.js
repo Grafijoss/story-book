@@ -18,7 +18,6 @@ export const Slide = styled.div`
   height: 500px;
   left: 50%;
   margin-left: -200px;
-  padding: 20px;
   position: fixed;
   transition: 0.2s;
   width: 400px;
