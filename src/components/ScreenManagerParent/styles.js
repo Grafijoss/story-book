@@ -1,4 +1,22 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export const WrrpScrrenManager = styled.div`
+  ${props => props.isCard 
+    ? css`
+      background: #fff;
+      border-radius: 10px 10px 0 0;
+      border: solid 1px #ccc;
+      bottom: 0;
+      height: 446px;
+      left: 50%;
+      position: fixed;
+      transform: translateX(-50%);
+      width: 375px;
+    `    
+   : css`
+      height: 100%;
+   `}
+`
 
 export const WrppButtons = styled.div`
   border-bottom: solid 1px #ccc;

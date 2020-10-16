@@ -8,14 +8,14 @@ const exit = (widthSlide, sideAnimaiton) => keyframes`
 	}
 
 	to {
-		left: calc(50% ${sideAnimaiton === 'prev' ? '+' : '-'} ${widthSlide/2}px);
+		left: calc(50% ${sideAnimaiton === 'PREV' ? '+' : '-'} ${widthSlide/2}px);
 		opacity: 0;
 	}
 `;
 
 const enter = (widthSlide, sideAnimaiton) =>  keyframes`
 	from {
-		left: calc(50% ${sideAnimaiton === 'prev' ? '-' : '+'} ${widthSlide/2}px);
+		left: calc(50% ${sideAnimaiton === 'PREV' ? '-' : '+'} ${widthSlide/2}px);
 		opacity: 0;
 	}
 

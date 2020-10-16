@@ -1,6 +1,6 @@
 import React from "react";
 
-import {CompetitiveView} from "./components/CompetitiveView"
+import { CompetitiveView } from "./components/CompetitiveView"
 
 import "./App.css";
 

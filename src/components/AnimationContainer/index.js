@@ -8,6 +8,10 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
   const [finishSlide, setfinishSlide] = useState("enter");
   const $step = document.querySelector(Slide);
 
+  const TYPES_ANIMATIONS = {
+    PREV: 'prev',
+    NEXT: 'next'
+  }
 
   useEffect(() => {
     $step && $step.addEventListener("animationend", animation);
@@ -29,7 +33,7 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
   };
 
   const moveStep = (value) => {
-    if (!isAnimation) {
+    if (!isAnimation && !!TYPES_ANIMATIONS[value]) {
       setIsAnimation(true);
       setCurrentSlide(value);
       setfinishSlide("exit");

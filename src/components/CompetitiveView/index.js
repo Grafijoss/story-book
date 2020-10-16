@@ -5,13 +5,57 @@ import { ScreenManagerParent } from '../ScreenManagerParent'
 
 import { Header } from "./styles";
 
+const MAX_COUNT = 3
+const COMPETITION_VIEWS = {
+    TIMELINE: 'CompetView',
+    SCREEN_MANAGER: "ScreenManagerParent"
+}
+
 export const CompetitiveView = () => {
 
     const [currenSlide, setCurrenSlide] = useState(null)
-    const [currenView, setCurrenView] = useState('CompetView')
-    const [currenNextView, setCurrenNextView] = useState('CompetView')
+    const [currenView, setCurrenView] = useState(COMPETITION_VIEWS.TIMELINE)
+    const [currenNextView, setCurrenNextView] = useState(COMPETITION_VIEWS.TIMELINE)
+
+    // manager
+
+    const [currentManager, setCurrentManager] = useState(null)
+    const [counter, setCounter] = useState(0)
+
+    const moveSlideManager = (value) => {
+        if (value === 'NEXT') {
+            if (counter < MAX_COUNT) {
+                setCurrentManager(value)     
+            }  else {
+                setCurrentManager('RETURN')
+                setCounter(0)
+                // changeView(COMPETITION_VIEWS.TIMELINE)
+            }
+        } else if (value === 'PREV') {
+            if (counter > 0) {
+                setCurrentManager(value)      
+            }  else {
+                setCurrentManager('RETURN')
+                setCounter(0)
+                // changeView(COMPETITION_VIEWS.TIMELINE)
+            }
+        }
+    }
 
     const isFinishedAnimationMngr = () => {
+        if (!!currentManager) {
+            setCurrentManager(null)
+            const counterAdd = currentManager === 'NEXT' ? counter + 1 : counter - 1
+            setCounter(counterAdd)
+        }
+    }
+
+
+    // manager
+
+    // compet view
+
+    const isFinishedAnimationView = () => {
         if (!!currenSlide) {
             setCurrenView(currenNextView)
             setCurrenSlide(null)
@@ -20,30 +64,45 @@ export const CompetitiveView = () => {
 
     const changeView = (view) => {
         if (view !== currenView) {
-            if (view === 'CompetView') {
-                setCurrenSlide("prev")
+            if (view === COMPETITION_VIEWS.TIMELINE) {
+                setCurrenSlide("PREV")
             } else {
-                setCurrenSlide("next")
+                setCurrenSlide("NEXT")
             }
             setCurrenNextView(view)
         }
     }
 
+    // compet view
+
     return (
         <>
             <Header>
-                {/* <button onClick={() => changeView("CompetView")}>CompetView</button> */}
-                <button onClick={() => changeView("ScreenManagerParent")}>ScreenManagerParent</button>
+                <button onClick={() => changeView(COMPETITION_VIEWS.SCREEN_MANAGER)}>ScreenManagerParent</button>
             </Header>
 
             <div className="card-container">
                 <AnimationContainer 
-                    callbackAnimation={isFinishedAnimationMngr}
+                    callbackAnimation={isFinishedAnimationView}
                     moveAnimation={currenSlide}
-                    widthSlide={400}
+                    widthSlide={375}
                 > 
-                    {currenView === 'CompetView' && <CompetView />}
-                    {currenView === 'ScreenManagerParent' && <ScreenManagerParent onExit={changeView} /> }
+                    {currenView === COMPETITION_VIEWS.TIMELINE && <CompetView />}
+                    {currenView === COMPETITION_VIEWS.SCREEN_MANAGER && (
+                        <ScreenManagerParent 
+                            currentManager={currentManager}
+                            buttonPrevManager={moveSlideManager}
+                            finishAnimation={isFinishedAnimationMngr}
+                            onExit={() => changeView(COMPETITION_VIEWS.TIMELINE)}
+                        > 
+                            <div>
+                                <h3>
+                                    Manager {counter}
+                                </h3>
+                                <button onClick={() => moveSlideManager("NEXT")}>Click</button>
+                            </div>
+                        </ScreenManagerParent>
+                    )}
                 </AnimationContainer>
             </div>
         </>

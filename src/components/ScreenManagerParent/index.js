@@ -1,63 +1,36 @@
-import React, {useState} from 'react'
+import React, { useEffect } from 'react'
 
 import {AnimationContainer} from '../AnimationContainer'
 
-import { WrppButtons, WrrpContent } from "./styles"
+import { WrrpScrrenManager, WrppButtons, WrrpContent } from "./styles"
 
-const MAX_COUNT = 5
+const TYPES_ANIMATIONS = {
+    PREV: 'prev',
+    NEXT: 'next'
+}
 
-export const ScreenManagerParent = ({ onExit }) => {
+export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, finishAnimation, onExit, isCard }) => {
 
-    const [currentManager, setCurrentManager] = useState(null)
-    const [counter, setCounter] = useState(0)
 
-    const moveSlide = (value) => {
-        if (value === 'next') {
-            if (counter < MAX_COUNT) {
-                setCurrentManager(value)     
-            }  else {
-                setCounter(0)
-                onExit('CompetView')
-            }
-        } else {
-            if (counter > 0) {
-                setCurrentManager(value)      
-            }  else {
-                setCounter(0)
-                onExit('CompetView')
-            }
-        } 
-    }
-
-    const isFinishedAnimationMngr = () => {
-        if (!!currentManager) {
-            setCurrentManager(null)
-            const counterAdd = currentManager === 'next' ? counter + 1 : counter - 1
-            setCounter(counterAdd)
-        }
-    }
+    useEffect(() => {
+        currentManager && !TYPES_ANIMATIONS[currentManager] && onExit()
+    }, [currentManager])
 
     return (
-        <>
+        <WrrpScrrenManager isCard={isCard}>
           <WrppButtons>
-            <button onClick={() => moveSlide("prev")}>Prev</button>
+            <button onClick={() => buttonPrevManager("PREV")}>Prev</button>
           </WrppButtons>
           <WrrpContent>
             <AnimationContainer 
-                callbackAnimation={isFinishedAnimationMngr}
+                callbackAnimation={finishAnimation}
                 moveAnimation={currentManager}
                 heightSlide={500}
-                widthSlide={360}
+                widthSlide={350}
             > 
-                <div>
-                    <h3>
-                        Manager {counter}
-                    </h3>
-                    <button onClick={() => moveSlide("next")}>Click</button>
-                </div>
+                { children }
             </AnimationContainer>
           </WrrpContent>
-
-        </>
+        </WrrpScrrenManager>
       );
 }
