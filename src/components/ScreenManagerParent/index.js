@@ -5,11 +5,11 @@ import {AnimationContainer} from '../AnimationContainer'
 import { WrrpScrrenManager, WrppButtons, WrrpContent } from "./styles"
 
 const TYPES_ANIMATIONS = {
-    PREV: 'prev',
-    NEXT: 'next'
+    PREV: 'PREV',
+    NEXT: 'NEXT'
 }
 
-export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, finishAnimation, onExit, isCard }) => {
+export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation, onExit, isCard }) => {
 
 
     useEffect(() => {
@@ -19,7 +19,12 @@ export const ScreenManagerParent = ({ children, currentManager, buttonPrevManage
     return (
         <WrrpScrrenManager isCard={isCard}>
           <WrppButtons>
-            <button onClick={() => buttonPrevManager("PREV")}>Prev</button>
+            <button
+              disabled={!!disableButtonPrevManager}
+              onClick={() => buttonPrevManager(TYPES_ANIMATIONS.PREV)}
+            >
+              Prev
+            </button>
           </WrppButtons>
           <WrrpContent>
             <AnimationContainer 
