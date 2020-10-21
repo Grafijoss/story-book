@@ -9,12 +9,7 @@ const TYPES_ANIMATIONS = {
     NEXT: 'NEXT'
 }
 
-export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation, onExit, isCard }) => {
-
-
-    useEffect(() => {
-        currentManager && !TYPES_ANIMATIONS[currentManager] && onExit()
-    }, [currentManager])
+export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation,  isCard }) => {
 
     return (
         <WrrpScrrenManager isCard={isCard}>

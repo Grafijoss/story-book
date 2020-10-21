@@ -1,20 +1,16 @@
 import styled, { css } from "styled-components";
-import { slideAnimate } from "./animation";
+// import { slideAnimate } from "./animation";
 
 export const Slide = styled.div`
-  ${(props) =>
-    !!props.typeAnimation &&
-    css`
-      ${slideAnimate({ typeAnimation: props.typeAnimation, widthSlide: props.widthSlide, sideAnimaiton: props.sideAnimaiton })}
-    `}
-  animation-fill-mode: forwards;
+  transition: all 0.5s ease;
   height: ${props => props.heightSlide ? props.heightSlide + 'px' : '100%' };
-  left: 50%;
+  left: ${props => props.left}%;
   margin-left: -${props => props.widthSlide/2}px;
+  opacity: ${props => props.opacity};
   position: absolute;
   width: ${props => props.widthSlide}px;
-  will-change: left, opacity;
 `;
+
 
 export const WrrpSlider = styled.div`
   height: 100%;

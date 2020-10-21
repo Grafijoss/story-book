@@ -14,12 +14,15 @@ const TYPES_ANIMATIONS = {
     PREV: 'PREV',
     NEXT: 'NEXT'
 }
+const SLIDE_TYPES = {
+    ENTER: 'ENTER',
+    EXIT: 'EXIT'
+  }
 
 export const CompetitiveView = () => {
 
     const [currenSlide, setCurrenSlide] = useState(null)
     const [currenView, setCurrenView] = useState(COMPETITION_VIEWS.TIMELINE)
-    const [currenNextView, setCurrenNextView] = useState(COMPETITION_VIEWS.TIMELINE)
 
     // manager
 
@@ -30,16 +33,14 @@ export const CompetitiveView = () => {
     const moveSlideManager = (value) => {
         if(!!TYPES_ANIMATIONS[value]) {
             if (value === TYPES_ANIMATIONS.NEXT ?  counter < MAX_COUNT : counter > 0) setCurrentManager(value) 
-            else {
-                setCurrentManager('RETURN')
-                setCounter(0)
-            }
+            if (value === TYPES_ANIMATIONS.PREV && counter === 0)  changeView(TYPES_ANIMATIONS.PREV)
         }
     }
 
-    const isFinishedAnimationMngr = () => {
-        if (!!currentManager) {
-            setCurrentManager(null)
+    const isFinishedAnimationMngr = (value) => {
+        setCurrentManager(null)
+        if (value.typeAnimation === SLIDE_TYPES.EXIT) {
+            setTimeout(() => setCurrentManager(value.slideType), 200)
             setCounter(currentManager === TYPES_ANIMATIONS.NEXT ? counter + 1 : counter - 1)
         }
     }
@@ -48,17 +49,18 @@ export const CompetitiveView = () => {
 
     // compet view
 
-    const isFinishedAnimationView = () => {
-        if (!!currenSlide) {
-            setCurrenView(currenNextView)
-            setCurrenSlide(null)
+    const isFinishedAnimationView = (value) => {
+        setCurrenSlide(null)
+        if (value.typeAnimation === SLIDE_TYPES.EXIT) {
+            console.log(currenView)
+            setCurrenView(currenView === COMPETITION_VIEWS.TIMELINE ? COMPETITION_VIEWS.SCREEN_MANAGER : COMPETITION_VIEWS.TIMELINE )
+            setTimeout(() => setCurrenSlide(value.slideType), 200)
         }
     }
 
     const changeView = (view) => {
         if (view !== currenView) {
             setCurrenSlide(view === COMPETITION_VIEWS.TIMELINE ? TYPES_ANIMATIONS.PREV : TYPES_ANIMATIONS.NEXT )
-            setCurrenNextView(view)
         }
     }
 
@@ -74,6 +76,7 @@ export const CompetitiveView = () => {
                 <AnimationContainer 
                     callbackAnimation={isFinishedAnimationView}
                     moveAnimation={currenSlide}
+                    heightSlide={500}
                     widthSlide={375}
                 > 
                     {currenView === COMPETITION_VIEWS.TIMELINE && <CompetView />}
@@ -82,8 +85,7 @@ export const CompetitiveView = () => {
                             currentManager={currentManager}
                             buttonPrevManager={moveSlideManager}
                             finishAnimation={isFinishedAnimationMngr}
-                            onExit={() => changeView(COMPETITION_VIEWS.TIMELINE)}
-                            disableButtonPrevManager={true}
+                            disableButtonPrevManager={false}
                         > 
                             <div>
                                 <h3>
