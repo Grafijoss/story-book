@@ -1,9 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import { CompetView } from "../CompetView";
 import { AnimationContainer } from "../AnimationContainer";
 import { ScreenManagerParent } from '../ScreenManagerParent'
 
 import { Header } from "./styles";
+
+import { useMachine } from '@xstate/react';
+import { toggleMachine } from '../../stateMachines/toogleMachine';
+
+
+
+
 
 const MAX_COUNT = 3
 const COMPETITION_VIEWS = {
@@ -66,18 +73,35 @@ export const CompetitiveView = () => {
 
     // compet view
 
+    //state machine
+    const [current, send] = useMachine(toggleMachine);
+    //state machine
+
+
+    const inputRef = useRef(null);
+
+
     return (
         <>
             <Header>
-                <button onClick={() => changeView(COMPETITION_VIEWS.SCREEN_MANAGER)}>ScreenManagerParent</button>
+                <button onClick={() => 
+                    changeView(COMPETITION_VIEWS.SCREEN_MANAGER)}
+                >ScreenManagerParent</button>
+                <button onClick={() => 
+                    send('TOGGLE')}
+                >Toogle</button>
+                <button onClick={() => inputRef.current.getAlert()}>Alert</button>
+                <h3>{current.matches('inactive') ? 'inactive' : 'active'}</h3>
             </Header>
 
             <div className="card-container">
                 <AnimationContainer 
+                    ref={inputRef}
                     callbackAnimation={isFinishedAnimationView}
                     moveAnimation={currenSlide}
                     heightSlide={500}
                     widthSlide={375}
+                    
                 > 
                     {currenView === COMPETITION_VIEWS.TIMELINE && <CompetView />}
                     {currenView === COMPETITION_VIEWS.SCREEN_MANAGER && (
@@ -91,7 +115,8 @@ export const CompetitiveView = () => {
                                 <h3>
                                     Manager {counter}
                                 </h3>
-                                <button onClick={() => moveSlideManager(TYPES_ANIMATIONS.NEXT)}>Click</button>
+                                {/* <button onClick={() => moveSlideManager(TYPES_ANIMATIONS.NEXT)}>Click</button> */}
+                                <button onClick={() => inputRef.current.getAlert()}>Click</button>
                             </div>
                         </ScreenManagerParent>
                     )}

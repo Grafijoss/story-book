@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useImperativeHandle, forwardRef, useEffect, useState } from "react";
 import { WrrpSlider, Slide } from "./styles";
 
 const ANIMATION_TYPES = {
@@ -11,7 +11,7 @@ const SLIDE_TYPES = {
   EXIT: 'EXIT'
 }
 
-export const AnimationContainer = ({ children, callbackAnimation, moveAnimation, widthSlide, heightSlide}) => {
+export const AnimationContainer = forwardRef(({ children, callbackAnimation, moveAnimation, widthSlide, heightSlide}, ref) => {
   const [isAnimation, setIsAnimation] = useState(false);
   const [typeAnimation, setTypeAnimation] = useState(SLIDE_TYPES.EXIT);
   const [leftSlide, setLeftSlide] = useState({
@@ -20,6 +20,14 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
     opacity: 1,
     widthSlide
   })
+
+  useImperativeHandle(ref, () => ({
+
+    getAlert() {
+      alert("getAlert from Child");
+    }
+
+  }));
 
   useEffect(() => {
 
@@ -86,4 +94,4 @@ export const AnimationContainer = ({ children, callbackAnimation, moveAnimation,
       </WrrpSlider>
     </>
   );
-};
+});
