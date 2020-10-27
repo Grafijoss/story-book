@@ -99,7 +99,7 @@ export const CompetitiveView = () => {
             <div className="card-container">
                 <AnimationContainer 
                     ref={animationContainerRef}
-                    auto={true}
+                    auto={false}
                     callbackAnimation={isFinishedAnimationView}
                     moveAnimation={currenSlide}
                     heightSlide={500}

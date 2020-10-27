@@ -62,6 +62,7 @@ export const AnimationContainer = forwardRef(({ children, callbackAnimation, mov
     if (finishSlide === "enter") {
       setTimeout(() => {
         callbackAnimation({typeAnimation: SLIDE_TYPES.EXIT , slideType: value})
+        auto && ref.current.refMoveStep(value)
       }, 600) 
     }
 
