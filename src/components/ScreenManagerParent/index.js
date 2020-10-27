@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useImperativeHandle, forwardRef, useRef, useEffect } from 'react'
 
 import {AnimationContainer} from '../AnimationContainer'
 
@@ -9,7 +9,17 @@ const TYPES_ANIMATIONS = {
     NEXT: 'NEXT'
 }
 
-export const ScreenManagerParent = ({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation,  isCard }) => {
+export const ScreenManagerParent = forwardRef(({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation,  isCard }, ref) => {
+  const animationContainerRef = useRef(null);
+
+
+  useImperativeHandle(ref, () => ({
+
+    refMoveStep(value) {
+      animationContainerRef.current.refMoveStep(value)
+    }
+  
+  }));
 
     return (
         <WrrpScrrenManager isCard={isCard}>
@@ -23,6 +33,7 @@ export const ScreenManagerParent = ({ children, currentManager, buttonPrevManage
           </WrppButtons>
           <WrrpContent>
             <AnimationContainer 
+              ref={animationContainerRef}
                 callbackAnimation={finishAnimation}
                 moveAnimation={currentManager}
                 heightSlide={500}
@@ -33,4 +44,4 @@ export const ScreenManagerParent = ({ children, currentManager, buttonPrevManage
           </WrrpContent>
         </WrrpScrrenManager>
       );
-}
+})
