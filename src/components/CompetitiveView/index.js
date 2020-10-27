@@ -3,13 +3,12 @@ import { CompetView } from "../CompetView";
 import { AnimationContainer } from "../AnimationContainer";
 import { ScreenManagerParent } from '../ScreenManagerParent'
 
-import { Header } from "./styles";
+import { Header, CounterInterval } from "./styles";
 
 import { useMachine } from '@xstate/react';
 import { toggleMachine } from '../../stateMachines/toogleMachine';
 
-
-
+import { useInterval } from '../../hooks/useInterval'
 
 
 const MAX_COUNT = 3
@@ -30,11 +29,28 @@ export const CompetitiveView = () => {
 
     const [currenSlide, setCurrenSlide] = useState(null)
     const [currenView, setCurrenView] = useState(COMPETITION_VIEWS.TIMELINE)
+    const [counterInterval, getCounterInterval] = useState(0)
+    const [refreshInterval, setRefreshInterval] = useState(3000)
 
     // manager
 
     // const [currentManager, setCurrentManager] = useState(null)
     const [counter, setCounter] = useState(0)
+
+
+    const counterPromise = () => {
+        return new Promise( function(resolve) {
+            setTimeout(() => {
+                resolve(counterInterval + 1)
+            }, 1000)
+        })
+    }
+
+    useInterval( async () => {
+        const con = await counterPromise()
+        getCounterInterval(con)
+        counterInterval === 5 && setRefreshInterval(null)
+    }, refreshInterval) 
 
 
     const moveSlideManager = (value) => {
@@ -86,6 +102,10 @@ export const CompetitiveView = () => {
 
     return (
         <>
+            <CounterInterval>
+                {counterInterval}
+            </CounterInterval>
+
             <Header>
                 <button onClick={() => 
                     changeView(COMPETITION_VIEWS.SCREEN_MANAGER)}

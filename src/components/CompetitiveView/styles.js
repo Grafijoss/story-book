@@ -13,3 +13,12 @@ export const Header = styled.header`
     width: 200px;
     }
 `;
+
+
+export const CounterInterval = styled.div`
+    color: #000;
+    position: absolute;
+    font-size: 60px;
+    top: 20px;
+    left: 20px;
+`
