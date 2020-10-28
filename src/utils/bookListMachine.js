@@ -98,6 +98,6 @@ const bookList = interpret(bookListMachine)
 // bookList.send("FETCH_SUCCED");
 // bookList.send("unknown");
 
-/* STATE VACIO */
+/* SET STATE withContext */
 
 bookList.send("FETCH_SUCCED");
