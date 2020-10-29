@@ -42,45 +42,40 @@ const createUnintegratedMachine = (opts) => {
           entry: send("PROCESSED_LAST_STORED_STATE"),
         },
         before: {
-          on: {
-            USER_CHECKED_IN: {
-              // estado al que quiero llegar
-              target: "polling",
-              // condicion
-              // cond: "validInterval",
-              // accion que cambia el estado de poolling a true
-              actions: "setPollingOn",
+          initial: "polling",
+          states: {
+            polling: {
+              // invoca el servicio apenas llega al estado
+              invoke: {
+                id: "fetchCheckedTournament",
+                // get es el endpoint del serivio o el metodo que vamos allamar
+                src: "fetchCheckedTournament",
+                // cuando la respuesta es correcta
+                onDone: {
+                  target: "waiting",
+                  actions: "setCounter",
+                },
+              },
+            },
+            waiting: {
+              after: {
+                POLL_DELAY: [
+                  {
+                    target: "polling",
+                    cond: "ifIsLessThanFive",
+                  },
+                  {
+                    target: "#during",
+                  },
+                ],
+              },
             },
           },
-          entry: send("USER_CHECKED_IN"),
         },
-        polling: {
-          // invoca el servicio apenas llega al estado
-          invoke: {
-            id: "fetchCheckedTournament",
-            // get es el endpoint del serivio o el metodo que vamos allamar
-            src: "fetchCheckedTournament",
-            // cuando la respuesta es correcta
-            onDone: {
-              target: "waiting",
-              actions: "setCounter",
-            },
-          },
+
+        during: {
+          id: "during",
         },
-        waiting: {
-          after: {
-            POLL_DELAY: [
-              {
-                target: "polling",
-                cond: "ifIsLessThanFive",
-              },
-              {
-                target: "during",
-              },
-            ],
-          },
-        },
-        during: {},
         after: {},
       },
     },
