@@ -4,23 +4,14 @@ import { createMachine, assign, send } from "xstate";
 import { useMachine } from "@xstate/react";
 
 const fetchCheckedTournament = async (context) => {
-  console.log("entraaa aqui");
   const response = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
     headers: { Accept: "application/json" },
   });
-
-  console.log("fetchCheckedTournament inside");
-
   return response.json();
 };
 
 const createUnintegratedMachine = (opts) => {
   const initialState = !opts.enabled ? "disabled" : "setUp";
-
-  console.log("esto es opts");
-  console.log(!opts.enabled);
-
-  console.log(initialState);
 
   const machine = createMachine(
     {
@@ -39,9 +30,7 @@ const createUnintegratedMachine = (opts) => {
           on: {
             PROCESSED_LAST_STORED_STATE: [{ target: "before" }],
           },
-          entry: send("PROCESSED_LAST_STORED_STATE"),
-        },
-        before: {
+          //   entry: send("PROCESSED_LAST_STORED_STATE"),
           initial: "polling",
           states: {
             polling: {
@@ -55,6 +44,7 @@ const createUnintegratedMachine = (opts) => {
                   target: "waiting",
                   actions: "setCounter",
                 },
+                onError: "failure",
               },
             },
             waiting: {
@@ -65,13 +55,23 @@ const createUnintegratedMachine = (opts) => {
                     cond: "ifIsLessThanFive",
                   },
                   {
-                    target: "#during",
+                    // target: "#during", podemos llamar a un estado padre con el id
+                    target: "restoring",
                   },
                 ],
               },
             },
+            failure: {
+              on: {
+                RETRY: "polling",
+              },
+            },
+            restoring: {
+              entry: send("PROCESSED_LAST_STORED_STATE"),
+            },
           },
         },
+        before: {},
 
         during: {
           id: "during",
@@ -79,10 +79,9 @@ const createUnintegratedMachine = (opts) => {
         after: {},
       },
     },
-    // main states
     {
       guards: {
-        ifIsLessThanFive: (context) => context.counter <= 5,
+        ifIsLessThanFive: (context) => context.counter < 5,
       },
       delays: {
         POLL_DELAY: (context) => context.interval,
@@ -94,14 +93,11 @@ const createUnintegratedMachine = (opts) => {
         setPollingOn: assign({ isPolling: (_) => true }),
         setCounter: assign({
           counter: (context, e) => {
-            console.log("pero si funciona");
-            console.log(e);
             return context.counter + 1;
           },
         }),
       },
     }
-    // main states
   );
 
   return machine;
