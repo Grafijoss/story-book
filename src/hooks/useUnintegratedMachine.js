@@ -29,6 +29,11 @@ const createUnintegratedMachine = (opts) => {
         setUp: {
           on: {
             PROCESSED_LAST_STORED_STATE: [{ target: "before" }],
+            ADD_COUNTER: [
+              {
+                actions: "setCounter",
+              },
+            ],
           },
           //   entry: send("PROCESSED_LAST_STORED_STATE"),
           initial: "polling",
@@ -37,14 +42,18 @@ const createUnintegratedMachine = (opts) => {
               // invoca el servicio apenas llega al estado
               invoke: {
                 id: "fetchCheckedTournament",
-                // get es el endpoint del serivio o el metodo que vamos allamar
-                src: "fetchCheckedTournament",
-                // cuando la respuesta es correcta
-                onDone: {
-                  target: "waiting",
-                  actions: "setCounter",
+                src: (context) => (callback) => {
+                  // Long poll using a data provider.
+                  // Call an endpoint that returns the match information of a user.
+                  // We should use the tournament ids we have stored.
+                  const id = setInterval(() => {
+                    // debugger;
+                    callback("ADD_COUNTER");
+                    console.log(context.counter);
+                  }, 5000);
+
+                  return () => clearInterval(id);
                 },
-                onError: "failure",
               },
             },
             waiting: {
