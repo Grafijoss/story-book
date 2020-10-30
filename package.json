@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@xstate/react": "^0.8.1",
+    "date-fns": "^2.16.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "@xstate/react": "^0.8.1",
     "react-scripts": "3.0.1",
     "styled-components": "^5.2.0",
     "xstate": "^4.13.0"
@@ -39,6 +40,6 @@
     "@storybook/addon-links": "^5.1.9",
     "@storybook/addon-viewport": "^5.1.9",
     "@storybook/addons": "^5.1.9",
-	"@storybook/react": "^5.3.9"
+    "@storybook/react": "^5.3.9"
   }
 }
