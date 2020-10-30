@@ -79,7 +79,7 @@ function App() {
 
   //   console.log("esto es state");
   //   console.log(state.context.counter);
-  console.log(state.value);
+  console.log(state.context.isCheckinTime);
 
   return (
     <div className="App">
