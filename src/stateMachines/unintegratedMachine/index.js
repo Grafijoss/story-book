@@ -109,7 +109,6 @@ const unintegratedMachine = (opts) => {
     },
     {
       guards: {
-        ifIsLessThanFive: (context) => context.counter < 5,
         ifTournamentDoesNotExist: (context) => {
           const tournament = Object.keys(context.tournament);
           return !tournament.length;
@@ -125,21 +124,11 @@ const unintegratedMachine = (opts) => {
         checkingStartTime,
       },
       actions: {
-        setPollingOn: assign({ isPolling: (_) => true }),
-        setCounter: assign({
-          counter: (context, e) => {
-            return context.counter + 1;
-          },
-        }),
         setTournament: assign({
-          tournament: (context, e) => {
-            return e.data.data.entries;
-          },
+          tournament: (context, e) => e.data.data.entries,
         }),
         setCheckingTimeStarted: assign({
-          isCheckinTime: (context, e) => {
-            return e.data;
-          },
+          isCheckinTime: (context, e) => e.data,
         }),
       },
     }
