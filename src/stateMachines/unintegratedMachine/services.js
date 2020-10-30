@@ -1,4 +1,4 @@
-import { addMinutes, compareDesc } from "date-fns";
+import { addMinutes, compareAsc } from "date-fns";
 
 export const fetchUser = async (context) => {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
@@ -48,7 +48,7 @@ export const checkingStartTime = (context) => {
   const currentTime = new Date();
   const currentDateUTC = currentTime.getTime();
 
-  const compareDates = compareDesc(currentDateUTC, checkedTime);
+  const compareDates = compareAsc(currentDateUTC, checkedTime);
 
   return new Promise((resolve) => {
     resolve(compareDates > 0);

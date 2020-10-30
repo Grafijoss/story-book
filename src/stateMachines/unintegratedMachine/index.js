@@ -1,4 +1,5 @@
 import { createMachine, assign, send } from "xstate";
+import { unintegratedContexts } from "./contexts";
 import { fetchCheckedTournament, checkingStartTime } from "./services";
 
 const unintegratedMachine = (opts) => {
@@ -9,11 +10,7 @@ const unintegratedMachine = (opts) => {
       id: "Unintegrated Tournaments",
       initial: initialState,
       context: {
-        counter: 0,
-        checkedInterval: 10000,
-        isNotCheckinTime: false,
-        tournamentInterval: 5000,
-        tournament: null,
+        ...unintegratedContexts,
       },
       states: {
         disabled: {
@@ -117,7 +114,7 @@ const unintegratedMachine = (opts) => {
           const tournament = Object.keys(context.tournament);
           return !tournament.length;
         },
-        ifCurrentIsLessCheckedTime: (context) => context.isNotCheckinTime,
+        ifCurrentIsLessCheckedTime: (context) => !context.isCheckinTime,
       },
       delays: {
         POLL_DELAY: (context) => context.tournamentInterval,
@@ -140,7 +137,7 @@ const unintegratedMachine = (opts) => {
           },
         }),
         setCheckingTimeStarted: assign({
-          isNotCheckinTime: (context, e) => {
+          isCheckinTime: (context, e) => {
             return e.data;
           },
         }),
