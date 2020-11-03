@@ -1,47 +1,55 @@
-import React, { useImperativeHandle, forwardRef, useRef, useEffect } from 'react'
+import React, { useImperativeHandle, forwardRef, useRef } from 'react';
 
-import {AnimationContainer} from '../AnimationContainer'
+import AnimationContainer, { ANIMATIONS_TYPES } from '../AnimationContainer';
 
-import { WrrpScrrenManager, WrppButtons, WrrpContent } from "./styles"
-
-const TYPES_ANIMATIONS = {
-    PREV: 'PREV',
-    NEXT: 'NEXT'
-}
-
-export const ScreenManagerParent = forwardRef(({ children, currentManager, buttonPrevManager, disableButtonPrevManager = false, finishAnimation,  isCard }, ref) => {
-  const animationContainerRef = useRef(null);
+import {
+    ButtonsContainer, Content, ScreenManagerContainer, BackButton,
+} from './StyledComponents';
 
 
-  useImperativeHandle(ref, () => ({
+const ScreenManager = forwardRef(({
+    children,
+    onChangeContent,
+    isPrevButton = false,
+    onPrevButton,
+    auto,
+}, ref) => {
+    const animationContainerRef = useRef(null);
 
-    refMoveStep(value) {
-      animationContainerRef.current.refMoveStep(value)
-    }
-  
-  }));
+    useImperativeHandle(ref, () => ({
+
+        moveStepRef(value) {
+            animationContainerRef.current.moveStepRef(value);
+        },
+
+    }));
 
     return (
-        <WrrpScrrenManager isCard={isCard}>
-          <WrppButtons>
-            <button
-              disabled={!!disableButtonPrevManager}
-              onClick={() => buttonPrevManager(TYPES_ANIMATIONS.PREV)}
-            >
-              Prev
-            </button>
-          </WrppButtons>
-          <WrrpContent>
-            <AnimationContainer 
-              ref={animationContainerRef}
-                callbackAnimation={finishAnimation}
-                moveAnimation={currentManager}
-                heightSlide={500}
-                widthSlide={350}
-            > 
-                { children }
-            </AnimationContainer>
-          </WrrpContent>
-        </WrrpScrrenManager>
-      );
-})
+        <ScreenManagerContainer>
+            <ButtonsContainer>
+                <BackButton
+                    type="button"
+                    disabled={!!isPrevButton}
+                    onClick={() => onPrevButton(ANIMATIONS_TYPES.PREV)}
+                    data-testid="prev-button"
+                >
+                   Return
+                </BackButton>
+            </ButtonsContainer>
+            <Content>
+                <AnimationContainer
+                    ref={animationContainerRef}
+                    auto={auto}
+                    onChangeContent={onChangeContent}
+                    slideHeight={390}
+                >
+                    <ScreenManagerContainer>
+                        { children }
+                    </ScreenManagerContainer>
+                </AnimationContainer>
+            </Content>
+        </ScreenManagerContainer>
+    );
+});
+
+export default ScreenManager;

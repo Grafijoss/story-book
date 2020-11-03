@@ -83,7 +83,8 @@ function App() {
 
   return (
     <div className="App">
-      <Title>{state.context.counter}</Title>
+      {state.context.isCheckinTime && <Title>Is CheckTime</Title>}
+      {!state.context.isCheckinTime && <Title>No es checktime</Title>}
     </div>
   );
 }
