@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
-import { H4, P, Button } from '~components/Foundation';
-import ScreenManager from '..';
-import AnimationContainer, { ANIMATIONS_TYPES, SLIDE_TYPES } from '../../AnimationContainer';
+// import { H4, P, Button } from 'components/Foundation';
+import ScreenManager from '.';
+import AnimationContainer, { ANIMATIONS_TYPES, SLIDE_TYPES } from '../AnimationContainer';
 
 const WrrpButtonTest = styled.div`
     button + button {
@@ -46,7 +46,7 @@ const HeaderExample = styled.div`
     display: flex;
     left: 0;
     height: 50px; 
-    position: fixed: 
+    position: fixed;
     top: 0;
     width: 100%;
 `;
@@ -86,23 +86,23 @@ storiesOf('PS5|Competitive View/ScreenManager')
                     auto={false}
                 >
                     <WrrpManagerContent>
-                        <H4>
+                        <h4>
                             Report Results
                             {' '}
                             {counter}
-                        </H4>
-                        <P>
+                        </h4>
+                        <p>
                             For this match select the result.
-                        </P>
+                        </p>
                         <WrrpButtonTest>
-                            <Button
+                            <button
                                 type="button"
                                 onClick={() => moveSlideManager(ANIMATIONS_TYPES.NEXT)}
                                 primary
                                 inverted
                             >
                                 Next slide
-                            </Button>
+                            </button>
                         </WrrpButtonTest>
                     </WrrpManagerContent>
                 </ScreenManager>
@@ -137,23 +137,23 @@ storiesOf('PS5|Competitive View/ScreenManager')
                     onPrevButton={moveSlideManager}
                 >
                     <WrrpManagerContent>
-                        <H4>
+                        <h4>
                             Report Results
                             {' '}
                             {counter}
-                        </H4>
-                        <P>
+                        </h4>
+                        <p>
                             For this match select the result.
-                        </P>
+                        </p>
                         <WrrpButtonTest>
-                            <Button
+                            <button
                                 type="button"
                                 onClick={() => moveSlideManager(ANIMATIONS_TYPES.NEXT)}
                                 primary
                                 inverted
                             >
                                 Next slide
-                            </Button>
+                            </button>
                         </WrrpButtonTest>
                     </WrrpManagerContent>
                 </ScreenManager>
